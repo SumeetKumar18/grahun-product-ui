@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Heart, Plus, Mic, RotateCcw, Maximize, RefreshCw, Camera, Info, X, Menu } from 'lucide-react';
-import { useJointScroll } from '../hooks/useJointScroll';
 import { useFullscreen } from '../hooks/useFullscreen';
 import { useIsMobile } from '../hooks/use-mobile';
 
