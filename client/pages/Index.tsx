@@ -193,9 +193,15 @@ const Index = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-grahun-dark/90 backdrop-blur-lg border-b border-grahun-white-20">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 md:py-8 flex justify-between items-center">
         <div className="flex items-center gap-2 md:gap-3">
-          <div className="w-8 md:w-9 h-8 md:h-9 bg-gradient-to-r from-grahun-purple to-grahun-pink rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-base md:text-lg">G</span>
-          </div>
+          <div
+            className="w-8 md:w-9 h-8 md:h-9 rounded-lg"
+            style={{
+              backgroundImage: "url(https://cdn.builder.io/api/v1/image/assets%2F05daff7350a64b3a86428cff6c41a044%2F8795676343f04658977e025c93ee9fe6)",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundSize: "cover"
+            }}
+          />
           <h1 className="text-white text-2xl md:text-3xl font-bold">Grahun</h1>
         </div>
         <button className="w-10 md:w-11 h-10 md:h-11 bg-black border border-white rounded-full flex items-center justify-center hover:bg-grahun-white-10 transition-colors">
