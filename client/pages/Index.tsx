@@ -5,7 +5,30 @@ import { useFullscreen } from '../hooks/useFullscreen';
 import { useIsMobile } from '../hooks/use-mobile';
 
 const Index = () => {
-  const { leftRef, rightRef, handleLeftScroll, handleRightScroll } = useJointScroll();
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+  const [lastScrollTime, setLastScrollTime] = useState(0);
+
+  // Central scroll handler that syncs both columns
+  useEffect(() => {
+    const handleScroll = () => {
+      const now = Date.now();
+      if (now - lastScrollTime < 16) return; // Throttle to ~60fps
+      setLastScrollTime(now);
+
+      const scrollTop = window.scrollY;
+
+      if (leftRef.current) {
+        leftRef.current.scrollTop = scrollTop * 0.8; // Adjust scroll speed
+      }
+      if (rightRef.current) {
+        rightRef.current.scrollTop = scrollTop * 0.8; // Adjust scroll speed
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollTime]);
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState<'query' | 'viewer' | 'details'>('viewer');
@@ -246,32 +269,44 @@ const Index = () => {
           )}
 
           {/* Desktop Layout */}
-          <div className={`${isMobile ? 'hidden' : 'grid'} grid-cols-1 lg:grid-cols-12 gap-8 h-screen max-h-[calc(100vh-8rem)]`}>
-            {/* Left Column - Scrollable */}
-            <div
-              ref={leftRef}
-              className="lg:col-span-3 joint-scroll pr-4"
-              onScroll={handleLeftScroll}
-            >
-              <div className="pb-8">
-                <UserQuerySection />
-              </div>
-            </div>
+          <div className={`${isMobile ? 'hidden' : 'block'} relative`}>
+            {/* Central Scroll Container */}
+            <div className="h-screen max-h-[calc(100vh-8rem)] overflow-y-auto scrollbar-hide">
+              <div className="grid grid-cols-12 gap-8 min-h-full">
+                {/* Left Column - Sticky */}
+                <div className="col-span-3 sticky top-0 h-screen max-h-[calc(100vh-8rem)] overflow-hidden">
+                  <div
+                    ref={leftRef}
+                    className="h-full overflow-y-auto scrollbar-hide pr-4"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
+                    <div className="py-8">
+                      <UserQuerySection />
+                    </div>
+                  </div>
+                </div>
 
-            {/* Center Column - Fixed */}
-            <div className="lg:col-span-6 flex flex-col items-center justify-center relative">
-              <ProductViewer3D />
-            </div>
+                {/* Center Column - Fixed */}
+                <div className="col-span-6 sticky top-0 h-screen max-h-[calc(100vh-8rem)] flex flex-col items-center justify-center">
+                  <ProductViewer3D />
+                </div>
 
-            {/* Right Column - Scrollable */}
-            <div
-              ref={rightRef}
-              className="lg:col-span-3 joint-scroll pl-4"
-              onScroll={handleRightScroll}
-            >
-              <div className="pb-8">
-                <ProductDetails />
+                {/* Right Column - Sticky */}
+                <div className="col-span-3 sticky top-0 h-screen max-h-[calc(100vh-8rem)] overflow-hidden">
+                  <div
+                    ref={rightRef}
+                    className="h-full overflow-y-auto scrollbar-hide pl-4"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
+                    <div className="py-8">
+                      <ProductDetails />
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              {/* Spacer to create scrollable content */}
+              <div className="h-[200vh]"></div>
             </div>
           </div>
 
