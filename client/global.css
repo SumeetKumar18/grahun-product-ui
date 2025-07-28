@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -101,6 +103,37 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-nunito;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .grahun-bg {
+    background: #0F0F0F;
+  }
+
+  .text-gradient {
+    background: linear-gradient(45deg, #FED464, #E23B65, #FE5E5E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .sticky-scroll-container {
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+
+  .joint-scroll {
+    overflow-y: auto;
+    height: 100vh;
   }
 }
