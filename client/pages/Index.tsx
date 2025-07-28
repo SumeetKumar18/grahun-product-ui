@@ -4,9 +4,7 @@ import { useFullscreen } from '../hooks/useFullscreen';
 import { useIsMobile } from '../hooks/use-mobile';
 
 const Index = () => {
-  const leftRef = useRef<HTMLDivElement>(null);
-  const rightRef = useRef<HTMLDivElement>(null);
-  const [lastScrollTime, setLastScrollTime] = useState(0);
+
   const [isQueryExpanded, setIsQueryExpanded] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
