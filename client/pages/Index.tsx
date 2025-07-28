@@ -270,7 +270,6 @@ const Index = () => {
               {/* Left Column - Scrollable */}
               <div className="col-span-3 relative">
                 <div
-                  ref={leftRef}
                   className="h-[calc(100vh-16rem)] overflow-y-auto scrollbar-hide pr-4"
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
