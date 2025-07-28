@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Heart, Plus, Mic, RotateCcw, Maximize, RefreshCw, Camera, Info, X, Menu } from 'lucide-react';
 import { useJointScroll } from '../hooks/useJointScroll';
 import { useFullscreen } from '../hooks/useFullscreen';
-import { useMobile } from '../hooks/use-mobile';
+import { useIsMobile } from '../hooks/use-mobile';
 
 const Index = () => {
   const { leftRef, rightRef, handleLeftScroll, handleRightScroll } = useJointScroll();
