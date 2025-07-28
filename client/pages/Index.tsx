@@ -7,7 +7,7 @@ import { useIsMobile } from '../hooks/use-mobile';
 const Index = () => {
   const { leftRef, rightRef, handleLeftScroll, handleRightScroll } = useJointScroll();
   const { isFullscreen, toggleFullscreen } = useFullscreen();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState<'query' | 'viewer' | 'details'>('viewer');
 
   const UserQuerySection = () => (
