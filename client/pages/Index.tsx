@@ -271,7 +271,10 @@ const Index = () => {
           <div className={`${isMobile ? 'hidden' : 'block'} relative h-full`}>
             {/* Central Scroll Container */}
             <div className="h-full overflow-y-auto scrollbar-hide">
-              <div className="grid grid-cols-12 gap-8 min-h-full">
+              <div
+                className="grid grid-cols-12 gap-8 min-h-full"
+                style={{ height: 'auto', flexGrow: 0 }}
+              >
                 {/* Left Column - Sticky */}
                 <div className="col-span-3 sticky top-0 h-[calc(100vh-16rem)] overflow-hidden">
                   <div
