@@ -8,26 +8,39 @@ const Index = () => {
   const rightRef = useRef<HTMLDivElement>(null);
   const [lastScrollTime, setLastScrollTime] = useState(0);
 
-  // Central scroll handler that syncs both columns
+  // Synchronized scrolling for left and right columns
   useEffect(() => {
-    const handleScroll = () => {
-      const now = Date.now();
-      if (now - lastScrollTime < 16) return; // Throttle to ~60fps
-      setLastScrollTime(now);
-
-      const scrollTop = window.scrollY;
-
-      if (leftRef.current) {
-        leftRef.current.scrollTop = scrollTop * 0.8; // Adjust scroll speed
-      }
-      if (rightRef.current) {
-        rightRef.current.scrollTop = scrollTop * 0.8; // Adjust scroll speed
+    const handleLeftScroll = () => {
+      if (rightRef.current && leftRef.current) {
+        rightRef.current.scrollTop = leftRef.current.scrollTop;
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollTime]);
+    const handleRightScroll = () => {
+      if (leftRef.current && rightRef.current) {
+        leftRef.current.scrollTop = rightRef.current.scrollTop;
+      }
+    };
+
+    const leftElement = leftRef.current;
+    const rightElement = rightRef.current;
+
+    if (leftElement) {
+      leftElement.addEventListener('scroll', handleLeftScroll, { passive: true });
+    }
+    if (rightElement) {
+      rightElement.addEventListener('scroll', handleRightScroll, { passive: true });
+    }
+
+    return () => {
+      if (leftElement) {
+        leftElement.removeEventListener('scroll', handleLeftScroll);
+      }
+      if (rightElement) {
+        rightElement.removeEventListener('scroll', handleRightScroll);
+      }
+    };
+  }, []);
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState<'query' | 'viewer' | 'details'>('viewer');
@@ -269,46 +282,41 @@ const Index = () => {
 
           {/* Desktop Layout */}
           <div className={`${isMobile ? 'hidden' : 'block'} relative h-full`}>
-            {/* Central Scroll Container */}
-            <div className="h-full overflow-y-auto scrollbar-hide">
-              <div
-                className="grid grid-cols-12 gap-8 min-h-full"
-                style={{ height: 'auto', flexGrow: 0 }}
-              >
-                {/* Left Column - Sticky */}
-                <div className="col-span-3 sticky top-0 h-[calc(100vh-16rem)] overflow-hidden">
-                  <div
-                    ref={leftRef}
-                    className="h-full overflow-y-auto scrollbar-hide pr-4"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                  >
-                    <div className="py-8">
-                      <UserQuerySection />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Center Column - Fixed */}
-                <div className="col-span-6 sticky top-0 h-[calc(100vh-16rem)] flex flex-col items-center justify-center">
-                  <ProductViewer3D />
-                </div>
-
-                {/* Right Column - Sticky */}
-                <div className="col-span-3 sticky top-0 h-[calc(100vh-16rem)] overflow-hidden">
-                  <div
-                    ref={rightRef}
-                    className="h-full overflow-y-auto scrollbar-hide pl-4"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                  >
-                    <div className="py-8">
-                      <ProductDetails />
-                    </div>
+            <div className="grid grid-cols-12 gap-8 h-full">
+              {/* Left Column - Scrollable */}
+              <div className="col-span-3 relative">
+                <div
+                  ref={leftRef}
+                  className="h-[calc(100vh-16rem)] overflow-y-auto scrollbar-hide pr-4"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  <div className="py-8">
+                    <UserQuerySection />
+                    {/* Additional content to make it scrollable */}
+                    <div className="h-[50vh]"></div>
                   </div>
                 </div>
               </div>
 
-              {/* Spacer to create scrollable content */}
-              <div className="h-[200vh]"></div>
+              {/* Center Column - Fixed */}
+              <div className="col-span-6 h-[calc(100vh-16rem)] flex flex-col items-center justify-center">
+                <ProductViewer3D />
+              </div>
+
+              {/* Right Column - Scrollable */}
+              <div className="col-span-3 relative">
+                <div
+                  ref={rightRef}
+                  className="h-[calc(100vh-16rem)] overflow-y-auto scrollbar-hide pl-4"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  <div className="py-8">
+                    <ProductDetails />
+                    {/* Additional content to make it scrollable */}
+                    <div className="h-[50vh]"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
