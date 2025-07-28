@@ -1,27 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Heart, Plus, Mic, RotateCcw, Maximize, RefreshCw, Camera, Info } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, Plus, Mic, RotateCcw, Maximize, RefreshCw, Camera, Info, X, Menu } from 'lucide-react';
+import { useJointScroll } from '../hooks/useJointScroll';
+import { useFullscreen } from '../hooks/useFullscreen';
+import { useMobile } from '../hooks/use-mobile';
 
 const Index = () => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [leftScrollPosition, setLeftScrollPosition] = useState(0);
-  const [rightScrollPosition, setRightScrollPosition] = useState(0);
-  const leftColumnRef = useRef<HTMLDivElement>(null);
-  const rightColumnRef = useRef<HTMLDivElement>(null);
-
-  // Joint scrolling behavior
-  const handleScroll = (source: 'left' | 'right', scrollTop: number) => {
-    if (source === 'left' && rightColumnRef.current) {
-      rightColumnRef.current.scrollTop = scrollTop;
-      setRightScrollPosition(scrollTop);
-    } else if (source === 'right' && leftColumnRef.current) {
-      leftColumnRef.current.scrollTop = scrollTop;
-      setLeftScrollPosition(scrollTop);
-    }
-  };
-
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-  };
+  const { leftRef, rightRef, handleLeftScroll, handleRightScroll } = useJointScroll();
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
+  const isMobile = useMobile();
+  const [activeTab, setActiveTab] = useState<'query' | 'viewer' | 'details'>('viewer');
 
   const UserQuerySection = () => (
     <div className="space-y-8 animate-fade-in">
@@ -90,7 +77,7 @@ const Index = () => {
   const ProductViewer3D = () => (
     <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50 bg-grahun-dark' : 'h-full'}`}>
       <div className="flex flex-col h-full">
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center p-4">
           <div className="relative w-full max-w-lg aspect-square">
             <img
               src="https://api.builder.io/api/v1/image/assets/TEMP/79e899e6a64cc1d3cf3f16ddc85a962385344142?width=1320"
@@ -105,7 +92,7 @@ const Index = () => {
               className="absolute top-8 right-8 p-3 bg-grahun-white-20 rounded-lg hover:bg-grahun-white-30 transition-colors"
               aria-label="Exit fullscreen"
             >
-              <span className="text-white text-xl">✕</span>
+              <X className="w-6 h-6 text-white" />
             </button>
           )}
         </div>
@@ -164,37 +151,38 @@ const Index = () => {
   );
 
   const BottomControlBar = () => (
-    <div className="fixed bottom-0 left-0 right-0 bg-grahun-dark/90 backdrop-blur-lg border-t border-grahun-white-20 p-8 z-40">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <div className="fixed bottom-0 left-0 right-0 bg-grahun-dark/90 backdrop-blur-lg border-t border-grahun-white-20 p-4 md:p-8 z-40">
+      <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-4 px-6 py-3 bg-grahun-yellow rounded-xl text-black text-xl font-medium hover:bg-yellow-400 transition-colors">
-            <RotateCcw className="w-8 h-8" />
-            Rematch
+          <button className="flex items-center gap-2 md:gap-4 px-4 md:px-6 py-2 md:py-3 bg-grahun-yellow rounded-xl text-black text-lg md:text-xl font-medium hover:bg-yellow-400 transition-colors">
+            <RotateCcw className="w-6 md:w-8 h-6 md:h-8" />
+            <span className="hidden sm:inline">Rematch</span>
           </button>
         </div>
 
-        <div className="flex items-center gap-5">
-          <button 
+        <div className="flex items-center gap-3 md:gap-5">
+          <button
             onClick={toggleFullscreen}
-            className="p-4 bg-grahun-white-20 rounded-full hover:bg-grahun-white-30 transition-colors"
+            className="p-3 md:p-4 bg-grahun-white-20 rounded-full hover:bg-grahun-white-30 transition-colors"
             aria-label="Toggle fullscreen"
           >
-            <Maximize className="w-6 h-6 text-white" />
+            <Maximize className="w-5 md:w-6 h-5 md:h-6 text-white" />
           </button>
-          <button className="p-4 bg-grahun-white-20 rounded-full hover:bg-grahun-white-30 transition-colors">
-            <RefreshCw className="w-6 h-6 text-white" />
+          <button className="p-3 md:p-4 bg-grahun-white-20 rounded-full hover:bg-grahun-white-30 transition-colors">
+            <RefreshCw className="w-5 md:w-6 h-5 md:h-6 text-white" />
           </button>
-          <button className="p-4 bg-grahun-white-20 rounded-full hover:bg-grahun-white-30 transition-colors">
-            <Camera className="w-6 h-6 text-white" />
+          <button className="p-3 md:p-4 bg-grahun-white-20 rounded-full hover:bg-grahun-white-30 transition-colors">
+            <Camera className="w-5 md:w-6 h-5 md:h-6 text-white" />
           </button>
         </div>
 
-        <div className="flex items-center gap-5">
-          <button className="px-16 py-5 bg-grahun-yellow rounded-xl text-black text-xl uppercase hover:bg-yellow-400 transition-colors">
-            Add to cart
+        <div className="flex items-center gap-3 md:gap-5">
+          <button className="px-8 md:px-16 py-3 md:py-5 bg-grahun-yellow rounded-xl text-black text-lg md:text-xl uppercase hover:bg-yellow-400 transition-colors">
+            <span className="hidden sm:inline">Add to cart</span>
+            <span className="sm:hidden">Add</span>
           </button>
-          <button className="p-4 hover:bg-grahun-white-20 rounded-lg transition-colors">
-            <Heart className="w-8 h-8 text-grahun-white-50" />
+          <button className="p-3 md:p-4 hover:bg-grahun-white-20 rounded-lg transition-colors">
+            <Heart className="w-6 md:w-8 h-6 md:h-8 text-grahun-white-50" />
           </button>
         </div>
       </div>
@@ -203,16 +191,16 @@ const Index = () => {
 
   const Header = () => (
     <header className="fixed top-0 left-0 right-0 z-50 bg-grahun-dark/90 backdrop-blur-lg border-b border-grahun-white-20">
-      <div className="max-w-7xl mx-auto px-8 py-8 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-gradient-to-r from-grahun-purple to-grahun-pink rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">G</span>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 md:py-8 flex justify-between items-center">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="w-8 md:w-9 h-8 md:h-9 bg-gradient-to-r from-grahun-purple to-grahun-pink rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-base md:text-lg">G</span>
           </div>
-          <h1 className="text-white text-3xl font-bold">Grahun</h1>
+          <h1 className="text-white text-2xl md:text-3xl font-bold">Grahun</h1>
         </div>
-        <button className="w-11 h-11 bg-black border border-white rounded-full flex items-center justify-center hover:bg-grahun-white-10 transition-colors">
-          <div className="w-8 h-8 bg-grahun-purple rounded-full flex items-center justify-center transform rotate-45">
-            <span className="text-white transform -rotate-45">🌙</span>
+        <button className="w-10 md:w-11 h-10 md:h-11 bg-black border border-white rounded-full flex items-center justify-center hover:bg-grahun-white-10 transition-colors">
+          <div className="w-7 md:w-8 h-7 md:h-8 bg-grahun-purple rounded-full flex items-center justify-center transform rotate-45">
+            <span className="text-white transform -rotate-45 text-sm md:text-base">🌙</span>
           </div>
         </button>
       </div>
@@ -224,13 +212,40 @@ const Index = () => {
       <Header />
       
       <main className="pt-32 pb-32">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 h-screen max-h-[calc(100vh-8rem)]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          {/* Mobile Navigation */}
+          {isMobile && (
+            <div className="flex justify-center mb-8">
+              <div className="flex bg-grahun-white-20 rounded-xl p-1">
+                {[
+                  { key: 'query', label: 'Query', icon: Mic },
+                  { key: 'viewer', label: 'Viewer', icon: Camera },
+                  { key: 'details', label: 'Details', icon: Info }
+                ].map(({ key, label, icon: Icon }) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveTab(key as any)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      activeTab === key
+                        ? 'bg-grahun-yellow text-black'
+                        : 'text-white hover:bg-grahun-white-20'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Desktop Layout */}
+          <div className={`${isMobile ? 'hidden' : 'grid'} grid-cols-1 lg:grid-cols-12 gap-8 h-screen max-h-[calc(100vh-8rem)]`}>
             {/* Left Column - Scrollable */}
-            <div 
-              ref={leftColumnRef}
+            <div
+              ref={leftRef}
               className="lg:col-span-3 joint-scroll pr-4"
-              onScroll={(e) => handleScroll('left', e.currentTarget.scrollTop)}
+              onScroll={handleLeftScroll}
             >
               <div className="pb-8">
                 <UserQuerySection />
@@ -243,16 +258,37 @@ const Index = () => {
             </div>
 
             {/* Right Column - Scrollable */}
-            <div 
-              ref={rightColumnRef}
+            <div
+              ref={rightRef}
               className="lg:col-span-3 joint-scroll pl-4"
-              onScroll={(e) => handleScroll('right', e.currentTarget.scrollTop)}
+              onScroll={handleRightScroll}
             >
               <div className="pb-8">
                 <ProductDetails />
               </div>
             </div>
           </div>
+
+          {/* Mobile Layout */}
+          {isMobile && (
+            <div className="space-y-8">
+              {activeTab === 'query' && (
+                <div className="animate-fade-in">
+                  <UserQuerySection />
+                </div>
+              )}
+              {activeTab === 'viewer' && (
+                <div className="h-[70vh] animate-fade-in">
+                  <ProductViewer3D />
+                </div>
+              )}
+              {activeTab === 'details' && (
+                <div className="animate-fade-in">
+                  <ProductDetails />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </main>
 
