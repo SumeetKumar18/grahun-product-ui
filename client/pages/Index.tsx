@@ -268,9 +268,9 @@ const Index = () => {
           )}
 
           {/* Desktop Layout */}
-          <div className={`${isMobile ? 'hidden' : 'block'} relative`}>
+          <div className={`${isMobile ? 'hidden' : 'block'} relative h-full`}>
             {/* Central Scroll Container */}
-            <div className="h-screen max-h-[calc(100vh-8rem)] overflow-y-auto scrollbar-hide">
+            <div className="h-full overflow-y-auto scrollbar-hide">
               <div className="grid grid-cols-12 gap-8 min-h-full">
                 {/* Left Column - Sticky */}
                 <div className="col-span-3 sticky top-0 h-screen max-h-[calc(100vh-8rem)] overflow-hidden">
