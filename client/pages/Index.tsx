@@ -239,8 +239,8 @@ const Index = () => {
     <div className="min-h-screen grahun-bg text-white font-nunito">
       <Header />
       
-      <main className="pt-32 pb-32">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+      <main className="fixed inset-0 pt-32 pb-32">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-full">
           {/* Mobile Navigation */}
           {isMobile && (
             <div className="flex justify-center mb-8">
