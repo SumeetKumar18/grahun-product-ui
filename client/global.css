@@ -162,6 +162,21 @@
     outline-offset: 2px;
   }
 
+  /* Hide scrollbars */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Smooth central scrolling */
+  .central-scroll {
+    scroll-behavior: smooth;
+  }
+
   /* Reduced motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
     .animate-fade-in,
