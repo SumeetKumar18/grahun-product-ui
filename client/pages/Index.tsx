@@ -10,39 +10,7 @@ const Index = () => {
   const [isQueryExpanded, setIsQueryExpanded] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
-  // Synchronized scrolling for left and right columns
-  useEffect(() => {
-    const handleLeftScroll = () => {
-      if (rightRef.current && leftRef.current) {
-        rightRef.current.scrollTop = leftRef.current.scrollTop;
-      }
-    };
 
-    const handleRightScroll = () => {
-      if (leftRef.current && rightRef.current) {
-        leftRef.current.scrollTop = rightRef.current.scrollTop;
-      }
-    };
-
-    const leftElement = leftRef.current;
-    const rightElement = rightRef.current;
-
-    if (leftElement) {
-      leftElement.addEventListener('scroll', handleLeftScroll, { passive: true });
-    }
-    if (rightElement) {
-      rightElement.addEventListener('scroll', handleRightScroll, { passive: true });
-    }
-
-    return () => {
-      if (leftElement) {
-        leftElement.removeEventListener('scroll', handleLeftScroll);
-      }
-      if (rightElement) {
-        rightElement.removeEventListener('scroll', handleRightScroll);
-      }
-    };
-  }, []);
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState<'query' | 'viewer' | 'details'>('viewer');
