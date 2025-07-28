@@ -62,17 +62,25 @@ const Index = () => {
               <Mic className="w-6 h-6 text-gray-400" />
             </button>
           </div>
-          <p className="text-white text-lg leading-relaxed pr-16 pb-16">
-            I'm looking for a ring that feels{' '}
-            <span className="font-bold text-grahun-pink">refined</span>{' '}
-            but still a bit bold. Something that's{' '}
-            <span className="font-bold text-grahun-coral">durable</span>{' '}
-            enough for daily wear, I don't want to worry about scratches or tarnish. I really like the idea of{' '}
-            <span className="font-bold text-grahun-coral">stacking</span>{' '}
-            rings or a design that feels layered or modular. Oh, and I prefer{' '}
-            <span className="font-bold text-grahun-yellow">sterling silver</span>{' '}
-            over gold, it just matches my vibe better.
-          </p>
+          <div className="pr-16 pb-16">
+            <p className={`text-white text-lg leading-relaxed transition-all duration-300 ${!isQueryExpanded ? 'line-clamp-3' : ''}`}>
+              I'm looking for a ring that feels{' '}
+              <span className="font-bold text-grahun-pink">refined</span>{' '}
+              but still a bit bold. Something that's{' '}
+              <span className="font-bold text-grahun-coral">durable</span>{' '}
+              enough for daily wear, I don't want to worry about scratches or tarnish. I really like the idea of{' '}
+              <span className="font-bold text-grahun-coral">stacking</span>{' '}
+              rings or a design that feels layered or modular. Oh, and I prefer{' '}
+              <span className="font-bold text-grahun-yellow">sterling silver</span>{' '}
+              over gold, it just matches my vibe better.
+            </p>
+            <button
+              onClick={() => setIsQueryExpanded(!isQueryExpanded)}
+              className="text-grahun-yellow hover:text-yellow-400 text-sm font-medium mt-2 transition-colors"
+            >
+              {isQueryExpanded ? 'Read less' : 'Read more'}
+            </button>
+          </div>
         </div>
       </div>
 
