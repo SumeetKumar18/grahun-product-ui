@@ -273,7 +273,7 @@ const Index = () => {
             <div className="h-full overflow-y-auto scrollbar-hide">
               <div className="grid grid-cols-12 gap-8 min-h-full">
                 {/* Left Column - Sticky */}
-                <div className="col-span-3 sticky top-0 h-screen max-h-[calc(100vh-8rem)] overflow-hidden">
+                <div className="col-span-3 sticky top-0 h-[calc(100vh-16rem)] overflow-hidden">
                   <div
                     ref={leftRef}
                     className="h-full overflow-y-auto scrollbar-hide pr-4"
@@ -286,12 +286,12 @@ const Index = () => {
                 </div>
 
                 {/* Center Column - Fixed */}
-                <div className="col-span-6 sticky top-0 h-screen max-h-[calc(100vh-8rem)] flex flex-col items-center justify-center">
+                <div className="col-span-6 sticky top-0 h-[calc(100vh-16rem)] flex flex-col items-center justify-center">
                   <ProductViewer3D />
                 </div>
 
                 {/* Right Column - Sticky */}
-                <div className="col-span-3 sticky top-0 h-screen max-h-[calc(100vh-8rem)] overflow-hidden">
+                <div className="col-span-3 sticky top-0 h-[calc(100vh-16rem)] overflow-hidden">
                   <div
                     ref={rightRef}
                     className="h-full overflow-y-auto scrollbar-hide pl-4"
