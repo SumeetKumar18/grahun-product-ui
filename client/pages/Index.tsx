@@ -162,14 +162,22 @@ const Index = () => {
       </div>
 
       <div className="p-6 border border-grahun-white-20 rounded-2xl bg-grahun-white-20/50 backdrop-blur-sm">
-        <p className="text-white text-xl leading-relaxed">
-          This six piece band ring delivers the{' '}
-          <span className="text-grahun-yellow">sterling silver</span>{' '}
-          quality you're looking for, ensuring a{' '}
-          <span className="text-grahun-coral">durable</span>{' '}
-          piece that will stand the test of time. Its design allows for elegant stacking options, and the overall look is decidedly{' '}
-          <span className="text-grahun-pink">refined</span>.
-        </p>
+        <div>
+          <p className={`text-white text-xl leading-relaxed transition-all duration-300 ${!isDescriptionExpanded ? 'line-clamp-3' : ''}`}>
+            This six piece band ring delivers the{' '}
+            <span className="text-grahun-yellow">sterling silver</span>{' '}
+            quality you're looking for, ensuring a{' '}
+            <span className="text-grahun-coral">durable</span>{' '}
+            piece that will stand the test of time. Its design allows for elegant stacking options, and the overall look is decidedly{' '}
+            <span className="text-grahun-pink">refined</span>.
+          </p>
+          <button
+            onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+            className="text-grahun-yellow hover:text-yellow-400 text-sm font-medium mt-2 transition-colors"
+          >
+            {isDescriptionExpanded ? 'Read less' : 'Read more'}
+          </button>
+        </div>
       </div>
 
       <div className="space-y-6">
