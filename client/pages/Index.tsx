@@ -223,11 +223,7 @@ const Index = () => {
           />
           <h1 className="text-white text-2xl md:text-3xl font-bold">Grahun</h1>
         </div>
-        <button className="w-10 md:w-11 h-10 md:h-11 bg-black border border-white rounded-full flex items-center justify-center hover:bg-grahun-white-10 transition-colors">
-          <div className="w-7 md:w-8 h-7 md:h-8 bg-grahun-purple rounded-full flex items-center justify-center transform rotate-45">
-            <span className="text-white transform -rotate-45 text-sm md:text-base">🌙</span>
-          </div>
-        </button>
+
       </div>
     </header>
   );
