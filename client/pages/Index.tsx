@@ -288,17 +288,23 @@ const Index = () => {
           {/* Mobile Layout */}
           {isMobile && (
             <div className="h-full flex flex-col">
-              {/* Dynamic Product Viewer at Top */}
-              <div
-                className="flex-shrink-0 flex items-center justify-center p-4 transition-all duration-300 ease-out"
-                style={{
-                  height: `${20 + (imageScale * 40)}vh`, // Dynamic height from 20vh to 60vh
-                  transform: `scale(${imageScale})`,
-                  transformOrigin: 'center'
-                }}
-              >
-                <ProductViewer3D />
-              </div>
+              {isFullscreen ? (
+                <div className="h-full flex items-center justify-center">
+                  <ProductViewer3D />
+                </div>
+              ) : (
+                <>
+                  {/* Dynamic Product Viewer at Top */}
+                  <div
+                    className="flex-shrink-0 flex items-center justify-center p-4 transition-all duration-300 ease-out"
+                    style={{
+                      height: `${20 + (imageScale * 40)}vh`, // Dynamic height from 20vh to 60vh
+                      transform: `scale(${imageScale})`,
+                      transformOrigin: 'center'
+                    }}
+                  >
+                    <ProductViewer3D />
+                  </div>
 
               {/* Mobile Navigation */}
               <div className="flex justify-center mb-4 px-4">
@@ -358,6 +364,8 @@ const Index = () => {
                   )}
                 </div>
               </div>
+                </>
+              )}
             </div>
           )}
 
