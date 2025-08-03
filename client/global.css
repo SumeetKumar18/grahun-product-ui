@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -111,11 +111,11 @@
   }
 
   .grahun-bg {
-    background: #0F0F0F;
+    background: #0f0f0f;
   }
 
   .text-gradient {
-    background: linear-gradient(45deg, #FED464, #E23B65, #FE5E5E);
+    background: linear-gradient(45deg, #fed464, #e23b65, #fe5e5e);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -158,7 +158,7 @@
 
   /* Focus styles for accessibility */
   .focus-visible {
-    outline: 2px solid #FED464;
+    outline: 2px solid #fed464;
     outline-offset: 2px;
   }
 

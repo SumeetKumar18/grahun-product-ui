@@ -1,14 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Heart, Plus, Mic, RotateCcw, Maximize, RefreshCw, Camera, Info, X, Menu, ChevronUp } from 'lucide-react';
-import { useFullscreen } from '../hooks/useFullscreen';
-import { useIsMobile } from '../hooks/use-mobile';
-import RecommendationDrawer from '../components/RecommendationDrawer';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Heart,
+  Plus,
+  Mic,
+  RotateCcw,
+  Maximize,
+  RefreshCw,
+  Camera,
+  Info,
+  X,
+  Menu,
+  ChevronUp,
+} from "lucide-react";
+import { useFullscreen } from "../hooks/useFullscreen";
+import { useIsMobile } from "../hooks/use-mobile";
+import RecommendationDrawer from "../components/RecommendationDrawer";
 
 const Index = () => {
-
   const [isQueryExpanded, setIsQueryExpanded] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-
 
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const isMobile = useIsMobile();
@@ -23,17 +33,17 @@ const Index = () => {
     // Scale from 1.0 to 0.3 based on scroll progress (first 30% of content)
     const maxScrollForScaling = scrollHeight * 0.3;
     const scaleProgress = Math.min(scrollTop / maxScrollForScaling, 1);
-    const scale = 1 - (scaleProgress * 0.7); // Scale from 1.0 to 0.3
+    const scale = 1 - scaleProgress * 0.7; // Scale from 1.0 to 0.3
     setImageScale(Math.max(scale, 0.3));
 
     // Scroll-to-switch functionality (only if not manually switching)
     if (!isScrollingToSwitch && scrollPercentage >= 0.95) {
       setIsScrollingToSwitch(true);
       setTimeout(() => {
-        if (activeTab === 'query') {
-          setActiveTab('details');
+        if (activeTab === "query") {
+          setActiveTab("details");
         } else {
-          setActiveTab('query');
+          setActiveTab("query");
         }
         // Reset scroll position to top after tab switch
         if (scrollContainerRef.current) {
@@ -46,7 +56,7 @@ const Index = () => {
   };
 
   // Handle manual tab switching
-  const handleTabSwitch = (tab: 'query' | 'details') => {
+  const handleTabSwitch = (tab: "query" | "details") => {
     setIsScrollingToSwitch(true);
     setActiveTab(tab);
     // Reset scroll position when manually switching
@@ -58,7 +68,7 @@ const Index = () => {
     // Re-enable scroll-to-switch after a delay
     setTimeout(() => setIsScrollingToSwitch(false), 500);
   };
-  const [activeTab, setActiveTab] = useState<'query' | 'details'>('query');
+  const [activeTab, setActiveTab] = useState<"query" | "details">("query");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [imageScale, setImageScale] = useState(1);
   const [isScrollingToSwitch, setIsScrollingToSwitch] = useState(false);
@@ -67,7 +77,9 @@ const Index = () => {
   const UserQuerySection = () => (
     <div className="space-y-8 animate-fade-in">
       <div>
-        <p className="text-grahun-white-40 text-lg mb-5">You came in looking for...</p>
+        <p className="text-grahun-white-40 text-lg mb-5">
+          You came in looking for...
+        </p>
         <div className="relative border-2 border-grahun-white-70 bg-grahun-white-20 rounded-2xl p-6 backdrop-blur-sm">
           <div className="absolute bottom-4 left-4">
             <button className="p-3 hover:bg-grahun-white-20 rounded-lg transition-colors">
@@ -80,22 +92,27 @@ const Index = () => {
             </button>
           </div>
           <div className="pr-16 pb-16">
-            <p className={`text-white text-lg leading-relaxed transition-all duration-300 ${!isQueryExpanded ? 'line-clamp-3' : ''}`}>
-              I'm looking for a ring that feels{' '}
-              <span className="font-bold text-grahun-pink">refined</span>{' '}
-              but still a bit bold. Something that's{' '}
-              <span className="font-bold text-grahun-coral">durable</span>{' '}
-              enough for daily wear, I don't want to worry about scratches or tarnish. I really like the idea of{' '}
-              <span className="font-bold text-grahun-coral">stacking</span>{' '}
-              rings or a design that feels layered or modular. Oh, and I prefer{' '}
-              <span className="font-bold text-grahun-yellow">sterling silver</span>{' '}
+            <p
+              className={`text-white text-lg leading-relaxed transition-all duration-300 ${!isQueryExpanded ? "line-clamp-3" : ""}`}
+            >
+              I'm looking for a ring that feels{" "}
+              <span className="font-bold text-grahun-pink">refined</span> but
+              still a bit bold. Something that's{" "}
+              <span className="font-bold text-grahun-coral">durable</span>{" "}
+              enough for daily wear, I don't want to worry about scratches or
+              tarnish. I really like the idea of{" "}
+              <span className="font-bold text-grahun-coral">stacking</span>{" "}
+              rings or a design that feels layered or modular. Oh, and I prefer{" "}
+              <span className="font-bold text-grahun-yellow">
+                sterling silver
+              </span>{" "}
               over gold, it just matches my vibe better.
             </p>
             <button
               onClick={() => setIsQueryExpanded(!isQueryExpanded)}
               className="text-grahun-yellow hover:text-yellow-400 text-sm font-medium mt-2 transition-colors"
             >
-              {isQueryExpanded ? 'Read less' : 'Read more'}
+              {isQueryExpanded ? "Read less" : "Read more"}
             </button>
           </div>
         </div>
@@ -116,13 +133,27 @@ const Index = () => {
       </div>
 
       <div className="space-y-5">
-        <p className="text-grahun-white-40 text-lg">Why this is the one for you</p>
+        <p className="text-grahun-white-40 text-lg">
+          Why this is the one for you
+        </p>
         <div className="space-y-5">
           {[
-            { icon: '💎', text: 'Crafted in premium sterling silver — a timeless, tarnish-resistant choice that aligns with your material preference.' },
-            { icon: '💪', text: 'Built to last — its durable construction means you can wear it daily without worrying about scratches or wear.' },
-            { icon: '✨', text: 'Designed for expression — the modular format allows for stacking, so you can mix and match to reflect your mood or outfit.' },
-            { icon: '📈', text: 'Elegantly refined — minimal yet bold, the clean lines and polished finish add a sophisticated touch to any look.' }
+            {
+              icon: "💎",
+              text: "Crafted in premium sterling silver — a timeless, tarnish-resistant choice that aligns with your material preference.",
+            },
+            {
+              icon: "💪",
+              text: "Built to last — its durable construction means you can wear it daily without worrying about scratches or wear.",
+            },
+            {
+              icon: "✨",
+              text: "Designed for expression — the modular format allows for stacking, so you can mix and match to reflect your mood or outfit.",
+            },
+            {
+              icon: "📈",
+              text: "Elegantly refined — minimal yet bold, the clean lines and polished finish add a sophisticated touch to any look.",
+            },
           ].map((item, index) => (
             <div key={index} className="flex gap-3 items-start">
               <div className="text-2xl">{item.icon}</div>
@@ -137,10 +168,14 @@ const Index = () => {
   );
 
   const ProductViewer3D = () => (
-    <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50 bg-grahun-dark' : 'h-full'}`}>
+    <div
+      className={`relative ${isFullscreen ? "fixed inset-0 z-50 bg-grahun-dark" : "h-full"}`}
+    >
       <div className="flex flex-col h-full">
         <div className="flex-1 flex items-center justify-center p-4">
-          <div className={`relative ${isFullscreen ? 'w-full max-w-4xl' : 'w-full max-w-lg'} aspect-square`}>
+          <div
+            className={`relative ${isFullscreen ? "w-full max-w-4xl" : "w-full max-w-lg"} aspect-square`}
+          >
             <img
               src="https://api.builder.io/api/v1/image/assets/TEMP/79e899e6a64cc1d3cf3f16ddc85a962385344142?width=1320"
               alt="Six piece band ring"
@@ -165,13 +200,19 @@ const Index = () => {
   const ProductDetails = () => (
     <div className="space-y-8 animate-fade-in">
       <div className="space-y-4">
-        <p className="text-white text-lg uppercase tracking-wide">STOLENGIRLFRIENDCLUB</p>
-        <h1 className="text-white text-4xl font-bold leading-tight">Six piece band ring</h1>
+        <p className="text-white text-lg uppercase tracking-wide">
+          STOLENGIRLFRIENDCLUB
+        </p>
+        <h1 className="text-white text-4xl font-bold leading-tight">
+          Six piece band ring
+        </h1>
         <div className="flex items-center justify-between">
           <p className="text-grahun-white-50 text-xl uppercase">Reviews</p>
           <div className="flex gap-1">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="w-4 h-4 text-grahun-yellow fill-current">⭐</div>
+              <div key={i} className="w-4 h-4 text-grahun-yellow fill-current">
+                ⭐
+              </div>
             ))}
             <div className="w-4 h-4 text-grahun-white-20 fill-current">⭐</div>
           </div>
@@ -180,26 +221,31 @@ const Index = () => {
 
       <div className="p-6 border border-grahun-white-20 rounded-2xl bg-grahun-white-20/50 backdrop-blur-sm">
         <div>
-          <p className={`text-white text-xl leading-relaxed transition-all duration-300 ${!isDescriptionExpanded ? 'line-clamp-3' : ''}`}>
-            This six piece band ring delivers the{' '}
-            <span className="text-grahun-yellow">sterling silver</span>{' '}
-            quality you're looking for, ensuring a{' '}
-            <span className="text-grahun-coral">durable</span>{' '}
-            piece that will stand the test of time. Its design allows for elegant stacking options, and the overall look is decidedly{' '}
+          <p
+            className={`text-white text-xl leading-relaxed transition-all duration-300 ${!isDescriptionExpanded ? "line-clamp-3" : ""}`}
+          >
+            This six piece band ring delivers the{" "}
+            <span className="text-grahun-yellow">sterling silver</span> quality
+            you're looking for, ensuring a{" "}
+            <span className="text-grahun-coral">durable</span> piece that will
+            stand the test of time. Its design allows for elegant stacking
+            options, and the overall look is decidedly{" "}
             <span className="text-grahun-pink">refined</span>.
           </p>
           <button
             onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
             className="text-grahun-yellow hover:text-yellow-400 text-sm font-medium mt-2 transition-colors"
           >
-            {isDescriptionExpanded ? 'Read less' : 'Read more'}
+            {isDescriptionExpanded ? "Read less" : "Read more"}
           </button>
         </div>
       </div>
 
       <div className="space-y-6">
         <div className="space-y-4">
-          <p className="text-grahun-white-50 text-xl uppercase">Additional Information</p>
+          <p className="text-grahun-white-50 text-xl uppercase">
+            Additional Information
+          </p>
           <div className="text-white text-xl leading-relaxed">
             <p>DIMENSIONS</p>
             <p>6.5 inches x 8 mm</p>
@@ -266,15 +312,15 @@ const Index = () => {
           <div
             className="w-8 md:w-9 h-8 md:h-9 rounded-lg"
             style={{
-              backgroundImage: "url(https://cdn.builder.io/api/v1/image/assets%2F05daff7350a64b3a86428cff6c41a044%2F8795676343f04658977e025c93ee9fe6)",
+              backgroundImage:
+                "url(https://cdn.builder.io/api/v1/image/assets%2F05daff7350a64b3a86428cff6c41a044%2F8795676343f04658977e025c93ee9fe6)",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
-              backgroundSize: "cover"
+              backgroundSize: "cover",
             }}
           />
           <h1 className="text-white text-2xl md:text-3xl font-bold">Grahun</h1>
         </div>
-
       </div>
     </header>
   );
@@ -282,7 +328,7 @@ const Index = () => {
   return (
     <div className="min-h-screen grahun-bg text-white font-nunito">
       <Header />
-      
+
       <main className="fixed inset-0 pt-32 pb-32">
         <div className="max-w-7xl mx-auto px-4 md:px-8 h-full">
           {/* Mobile Layout */}
@@ -298,85 +344,85 @@ const Index = () => {
                   <div
                     className="flex-shrink-0 flex items-center justify-center p-4 transition-all duration-300 ease-out"
                     style={{
-                      height: `${20 + (imageScale * 40)}vh`, // Dynamic height from 20vh to 60vh
+                      height: `${20 + imageScale * 40}vh`, // Dynamic height from 20vh to 60vh
                       transform: `scale(${imageScale})`,
-                      transformOrigin: 'center'
+                      transformOrigin: "center",
                     }}
                   >
                     <ProductViewer3D />
                   </div>
 
-              {/* Mobile Navigation */}
-              <div className="flex justify-center mb-4 px-4">
-                <div className="flex bg-grahun-white-20 rounded-xl p-1 w-full max-w-md">
-                  {[
-                    { key: 'query', label: 'Query', icon: Mic },
-                    { key: 'details', label: 'Details', icon: Info }
-                  ].map(({ key, label, icon: Icon }) => (
-                    <button
-                      key={key}
-                      onClick={() => handleTabSwitch(key as any)}
-                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-all duration-200 flex-1 ${
-                        activeTab === key
-                          ? 'bg-grahun-yellow text-black'
-                          : 'text-white hover:bg-grahun-white-20'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                  {/* Mobile Navigation */}
+                  <div className="flex justify-center mb-4 px-4">
+                    <div className="flex bg-grahun-white-20 rounded-xl p-1 w-full max-w-md">
+                      {[
+                        { key: "query", label: "Query", icon: Mic },
+                        { key: "details", label: "Details", icon: Info },
+                      ].map(({ key, label, icon: Icon }) => (
+                        <button
+                          key={key}
+                          onClick={() => handleTabSwitch(key as any)}
+                          className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-all duration-200 flex-1 ${
+                            activeTab === key
+                              ? "bg-grahun-yellow text-black"
+                              : "text-white hover:bg-grahun-white-20"
+                          }`}
+                        >
+                          <Icon className="w-4 h-4" />
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-              {/* Scrollable Content Area */}
-              <div className="flex-1 overflow-hidden">
-                <div
-                  ref={scrollContainerRef}
-                  className="h-full overflow-y-auto px-4 pb-32 mobile-scroll-container"
-                  onScroll={handleMobileScroll}
-                  style={{
-                    scrollbarWidth: 'none',
-                    msOverflowStyle: 'none',
-                    WebkitOverflowScrolling: 'touch'
-                  }}
-                >
-                  {activeTab === 'query' ? (
-                    <div className="space-y-6">
-                      <UserQuerySection />
-                      {/* Extra content to enable scrolling to end */}
-                      <div className="h-[30vh] flex items-end justify-center pb-8">
-                        <p className="text-grahun-white-40 text-sm text-center">
-                          Scroll down to see product details
-                        </p>
-                      </div>
+                  {/* Scrollable Content Area */}
+                  <div className="flex-1 overflow-hidden">
+                    <div
+                      ref={scrollContainerRef}
+                      className="h-full overflow-y-auto px-4 pb-32 mobile-scroll-container"
+                      onScroll={handleMobileScroll}
+                      style={{
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
+                        WebkitOverflowScrolling: "touch",
+                      }}
+                    >
+                      {activeTab === "query" ? (
+                        <div className="space-y-6">
+                          <UserQuerySection />
+                          {/* Extra content to enable scrolling to end */}
+                          <div className="h-[30vh] flex items-end justify-center pb-8">
+                            <p className="text-grahun-white-40 text-sm text-center">
+                              Scroll down to see product details
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-6">
+                          <ProductDetails />
+                          {/* Extra content to enable scrolling to end */}
+                          <div className="h-[30vh] flex items-end justify-center pb-8">
+                            <p className="text-grahun-white-40 text-sm text-center">
+                              Scroll down to see user query
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  ) : (
-                    <div className="space-y-6">
-                      <ProductDetails />
-                      {/* Extra content to enable scrolling to end */}
-                      <div className="h-[30vh] flex items-end justify-center pb-8">
-                        <p className="text-grahun-white-40 text-sm text-center">
-                          Scroll down to see user query
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+                  </div>
                 </>
               )}
             </div>
           )}
 
           {/* Desktop Layout */}
-          <div className={`${isMobile ? 'hidden' : 'block'} relative h-full`}>
+          <div className={`${isMobile ? "hidden" : "block"} relative h-full`}>
             <div className="grid grid-cols-12 gap-8 h-full">
               {/* Left Column - Scrollable */}
               <div className="col-span-3 relative">
                 <div
                   className="h-[calc(100vh-16rem)] overflow-y-auto scrollbar-hide pr-4"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                   <div className="py-8">
                     <UserQuerySection />
@@ -395,7 +441,7 @@ const Index = () => {
               <div className="col-span-3 relative">
                 <div
                   className="h-[calc(100vh-16rem)] overflow-y-auto scrollbar-hide pl-4"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                   <div className="py-8">
                     <ProductDetails />
@@ -406,8 +452,6 @@ const Index = () => {
               </div>
             </div>
           </div>
-
-
         </div>
       </main>
 
