@@ -185,6 +185,28 @@
     scroll-behavior: smooth;
   }
 
+  /* Mobile scroll container */
+  .mobile-scroll-container {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .mobile-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Smooth scrolling for mobile */
+  @media (max-width: 768px) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .mobile-scroll-container {
+      scroll-behavior: smooth;
+    }
+  }
+
   /* Reduced motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
     .animate-fade-in,
