@@ -11,7 +11,30 @@ const Index = () => {
 
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const isMobile = useIsMobile();
-  const [activeTab, setActiveTab] = useState<'query' | 'viewer' | 'details'>('viewer');
+
+  // Handle mobile scroll-to-switch functionality
+  const handleMobileScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+
+    // If scrolled to bottom (within 5% threshold), switch tabs
+    if (scrollPercentage >= 0.95) {
+      setTimeout(() => {
+        if (activeTab === 'query') {
+          setActiveTab('details');
+        } else {
+          setActiveTab('query');
+        }
+        // Reset scroll position to top after tab switch
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = 0;
+        }
+      }, 100);
+    }
+  };
+  const [activeTab, setActiveTab] = useState<'query' | 'details'>('query');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const UserQuerySection = () => (
     <div className="space-y-8 animate-fade-in">
@@ -234,28 +257,66 @@ const Index = () => {
       
       <main className="fixed inset-0 pt-32 pb-32">
         <div className="max-w-7xl mx-auto px-4 md:px-8 h-full">
-          {/* Mobile Navigation */}
+          {/* Mobile Layout */}
           {isMobile && (
-            <div className="flex justify-center mb-8">
-              <div className="flex bg-grahun-white-20 rounded-xl p-1">
-                {[
-                  { key: 'query', label: 'Query', icon: Mic },
-                  { key: 'viewer', label: 'Viewer', icon: Camera },
-                  { key: 'details', label: 'Details', icon: Info }
-                ].map(({ key, label, icon: Icon }) => (
-                  <button
-                    key={key}
-                    onClick={() => setActiveTab(key as any)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      activeTab === key
-                        ? 'bg-grahun-yellow text-black'
-                        : 'text-white hover:bg-grahun-white-20'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    {label}
-                  </button>
-                ))}
+            <div className="h-full flex flex-col">
+              {/* Fixed Product Viewer at Top */}
+              <div className="h-[50vh] flex-shrink-0 flex items-center justify-center p-4">
+                <ProductViewer3D />
+              </div>
+
+              {/* Mobile Navigation */}
+              <div className="flex justify-center mb-4 px-4">
+                <div className="flex bg-grahun-white-20 rounded-xl p-1 w-full max-w-md">
+                  {[
+                    { key: 'query', label: 'Query', icon: Mic },
+                    { key: 'details', label: 'Details', icon: Info }
+                  ].map(({ key, label, icon: Icon }) => (
+                    <button
+                      key={key}
+                      onClick={() => setActiveTab(key as any)}
+                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-colors flex-1 ${
+                        activeTab === key
+                          ? 'bg-grahun-yellow text-black'
+                          : 'text-white hover:bg-grahun-white-20'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Scrollable Content Area */}
+              <div className="flex-1 overflow-hidden">
+                <div
+                  ref={scrollContainerRef}
+                  className="h-full overflow-y-auto px-4 pb-32"
+                  onScroll={handleMobileScroll}
+                >
+                  {activeTab === 'query' ? (
+                    <div className="space-y-6">
+                      <UserQuerySection />
+                      {/* Extra content to enable scrolling to end */}
+                      <div className="h-[30vh] flex items-end justify-center pb-8">
+                        <p className="text-grahun-white-40 text-sm text-center">
+                          Scroll down to see product details
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      <ProductDetails />
+                      {/* Extra content to enable scrolling to end */}
+                      <div className="h-[30vh] flex items-end justify-center pb-8">
+                        <p className="text-grahun-white-40 text-sm text-center">
+                          Scroll down to see user query
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
@@ -298,26 +359,7 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Mobile Layout */}
-          {isMobile && (
-            <div className="space-y-8">
-              {activeTab === 'query' && (
-                <div className="animate-fade-in">
-                  <UserQuerySection />
-                </div>
-              )}
-              {activeTab === 'viewer' && (
-                <div className="h-[70vh] animate-fade-in">
-                  <ProductViewer3D />
-                </div>
-              )}
-              {activeTab === 'details' && (
-                <div className="animate-fade-in">
-                  <ProductDetails />
-                </div>
-              )}
-            </div>
-          )}
+
         </div>
       </main>
 
