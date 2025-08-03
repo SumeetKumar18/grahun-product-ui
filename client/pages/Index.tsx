@@ -412,6 +412,25 @@ const Index = () => {
       </main>
 
       <BottomControlBar />
+
+      {/* Recommendation Tab */}
+      {!isFullscreen && (
+        <div className="fixed bottom-24 md:bottom-32 left-1/2 transform -translate-x-1/2 z-30">
+          <button
+            onClick={() => setIsRecommendationOpen(true)}
+            className="flex items-center gap-2 px-6 py-3 bg-grahun-white-20 backdrop-blur-lg border border-grahun-white-30 rounded-full text-white hover:bg-grahun-white-30 transition-all duration-200 hover:scale-105"
+          >
+            <ChevronUp className="w-5 h-5" />
+            <span className="font-medium">Recommendations</span>
+          </button>
+        </div>
+      )}
+
+      {/* Recommendation Drawer */}
+      <RecommendationDrawer
+        isOpen={isRecommendationOpen}
+        onClose={() => setIsRecommendationOpen(false)}
+      />
     </div>
   );
 };
