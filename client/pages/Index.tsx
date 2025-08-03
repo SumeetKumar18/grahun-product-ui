@@ -19,11 +19,11 @@ const Index = () => {
     const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
 
     // Dynamic image scaling based on scroll position
-    // Scale from 1.0 to 0.6 based on scroll progress (first 30% of content)
+    // Scale from 1.0 to 0.3 based on scroll progress (first 30% of content)
     const maxScrollForScaling = scrollHeight * 0.3;
     const scaleProgress = Math.min(scrollTop / maxScrollForScaling, 1);
-    const scale = 1 - (scaleProgress * 0.4); // Scale from 1.0 to 0.6
-    setImageScale(Math.max(scale, 0.6));
+    const scale = 1 - (scaleProgress * 0.7); // Scale from 1.0 to 0.3
+    setImageScale(Math.max(scale, 0.3));
 
     // Scroll-to-switch functionality (only if not manually switching)
     if (!isScrollingToSwitch && scrollPercentage >= 0.95) {
@@ -61,6 +61,7 @@ const Index = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [imageScale, setImageScale] = useState(1);
   const [isScrollingToSwitch, setIsScrollingToSwitch] = useState(false);
+  const [isRecommendationOpen, setIsRecommendationOpen] = useState(false);
 
   const UserQuerySection = () => (
     <div className="space-y-8 animate-fade-in">
@@ -102,13 +103,13 @@ const Index = () => {
       <div className="space-y-5">
         <div className="flex justify-between gap-4">
           <button className="px-4 py-3 bg-grahun-white-20 rounded-xl text-white text-lg font-light hover:bg-grahun-white-30 transition-colors">
-            Perfect Fit
+            Perfect Match
           </button>
           <button className="px-4 py-3 bg-grahun-yellow rounded-xl text-black text-lg font-light hover:bg-yellow-400 transition-colors">
-            Decent Fit
+            Decent Match
           </button>
           <button className="px-4 py-3 bg-grahun-white-20 rounded-xl text-white text-lg font-light hover:bg-grahun-white-30 transition-colors">
-            Low Fit
+            Partial Match
           </button>
         </div>
       </div>
@@ -138,7 +139,7 @@ const Index = () => {
     <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50 bg-grahun-dark' : 'h-full'}`}>
       <div className="flex flex-col h-full">
         <div className="flex-1 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-lg aspect-square">
+          <div className={`relative ${isFullscreen ? 'w-full max-w-4xl' : 'w-full max-w-lg'} aspect-square`}>
             <img
               src="https://api.builder.io/api/v1/image/assets/TEMP/79e899e6a64cc1d3cf3f16ddc85a962385344142?width=1320"
               alt="Six piece band ring"
@@ -290,7 +291,7 @@ const Index = () => {
               <div
                 className="flex-shrink-0 flex items-center justify-center p-4 transition-all duration-300 ease-out"
                 style={{
-                  height: `${40 + (imageScale * 20)}vh`, // Dynamic height from 40vh to 60vh
+                  height: `${20 + (imageScale * 40)}vh`, // Dynamic height from 20vh to 60vh
                   transform: `scale(${imageScale})`,
                   transformOrigin: 'center'
                 }}
