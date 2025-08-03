@@ -12,14 +12,22 @@ const Index = () => {
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   const isMobile = useIsMobile();
 
-  // Handle mobile scroll-to-switch functionality
+  // Handle mobile scroll with dynamic image sizing and tab switching
   const handleMobileScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
     const { scrollTop, scrollHeight, clientHeight } = container;
     const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
 
-    // If scrolled to bottom (within 5% threshold), switch tabs
-    if (scrollPercentage >= 0.95) {
+    // Dynamic image scaling based on scroll position
+    // Scale from 1.0 to 0.6 based on scroll progress (first 30% of content)
+    const maxScrollForScaling = scrollHeight * 0.3;
+    const scaleProgress = Math.min(scrollTop / maxScrollForScaling, 1);
+    const scale = 1 - (scaleProgress * 0.4); // Scale from 1.0 to 0.6
+    setImageScale(Math.max(scale, 0.6));
+
+    // Scroll-to-switch functionality (only if not manually switching)
+    if (!isScrollingToSwitch && scrollPercentage >= 0.95) {
+      setIsScrollingToSwitch(true);
       setTimeout(() => {
         if (activeTab === 'query') {
           setActiveTab('details');
@@ -30,11 +38,29 @@ const Index = () => {
         if (scrollContainerRef.current) {
           scrollContainerRef.current.scrollTop = 0;
         }
-      }, 100);
+        // Re-enable scroll-to-switch after a delay
+        setTimeout(() => setIsScrollingToSwitch(false), 500);
+      }, 200);
     }
+  };
+
+  // Handle manual tab switching
+  const handleTabSwitch = (tab: 'query' | 'details') => {
+    setIsScrollingToSwitch(true);
+    setActiveTab(tab);
+    // Reset scroll position when manually switching
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+    // Reset image scale
+    setImageScale(1);
+    // Re-enable scroll-to-switch after a delay
+    setTimeout(() => setIsScrollingToSwitch(false), 500);
   };
   const [activeTab, setActiveTab] = useState<'query' | 'details'>('query');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [imageScale, setImageScale] = useState(1);
+  const [isScrollingToSwitch, setIsScrollingToSwitch] = useState(false);
 
   const UserQuerySection = () => (
     <div className="space-y-8 animate-fade-in">
@@ -260,8 +286,15 @@ const Index = () => {
           {/* Mobile Layout */}
           {isMobile && (
             <div className="h-full flex flex-col">
-              {/* Fixed Product Viewer at Top */}
-              <div className="h-[50vh] flex-shrink-0 flex items-center justify-center p-4">
+              {/* Dynamic Product Viewer at Top */}
+              <div
+                className="flex-shrink-0 flex items-center justify-center p-4 transition-all duration-300 ease-out"
+                style={{
+                  height: `${40 + (imageScale * 20)}vh`, // Dynamic height from 40vh to 60vh
+                  transform: `scale(${imageScale})`,
+                  transformOrigin: 'center'
+                }}
+              >
                 <ProductViewer3D />
               </div>
 
@@ -274,8 +307,8 @@ const Index = () => {
                   ].map(({ key, label, icon: Icon }) => (
                     <button
                       key={key}
-                      onClick={() => setActiveTab(key as any)}
-                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-colors flex-1 ${
+                      onClick={() => handleTabSwitch(key as any)}
+                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-all duration-200 flex-1 ${
                         activeTab === key
                           ? 'bg-grahun-yellow text-black'
                           : 'text-white hover:bg-grahun-white-20'
@@ -292,8 +325,13 @@ const Index = () => {
               <div className="flex-1 overflow-hidden">
                 <div
                   ref={scrollContainerRef}
-                  className="h-full overflow-y-auto px-4 pb-32"
+                  className="h-full overflow-y-auto px-4 pb-32 mobile-scroll-container"
                   onScroll={handleMobileScroll}
+                  style={{
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                    WebkitOverflowScrolling: 'touch'
+                  }}
                 >
                   {activeTab === 'query' ? (
                     <div className="space-y-6">
